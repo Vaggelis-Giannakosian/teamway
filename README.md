@@ -4,7 +4,7 @@ The request was to build a simple personality test application, that takes 3-5 d
 
 ### Requirements
 
-- PHP >= 7.2.5
+- PHP >= 7.4
 - BCMath PHP Extension
 - Ctype PHP Extension
 - Fileinfo PHP extension
@@ -24,7 +24,7 @@ Run:
 cp .env.example .env
 php artisan key:generate
 touch storage/app/database.sqlite
-php artisan migrate
+php artisan migrate --seed
 php artisan serve
 ```
 

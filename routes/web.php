@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PersonalityTestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('personality-test',[PersonalityTestController::class,'index']);
+Route::get('personality-test/{answer}',[PersonalityTestController::class,'store']);
+Route::get('personality-test/result',[PersonalityTestController::class,'show']);

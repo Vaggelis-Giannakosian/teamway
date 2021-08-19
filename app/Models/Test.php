@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class Test extends Model
 {
@@ -19,7 +20,6 @@ class Test extends Model
         return $this->belongsToMany(Answer::class);
     }
 
-
     public function addAnswer(Answer $answer): bool
     {
         if ($oldAnswer = $this->questionAlreadyAnswered($answer)) {
@@ -30,30 +30,57 @@ class Test extends Model
         return count($result['attached'] ?? []);
     }
 
+    public function nextRemainingQuestion(): ?Question
+    {
+        $questionsAlreadyAnswered = $this->answers->count() ? $this->answers->pluck('question_id') : [];
+
+        return Question::whereNotIn('id', $questionsAlreadyAnswered)
+            ->orderBy('id')
+            ->select('id')
+            ->first();
+    }
+
+    public function getQuestionsAttribute():\Illuminate\Database\Eloquent\Collection
+    {
+        return Question::with(['answers' => fn($q)=>$q->orderBy('id')])
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function isCompleted():bool
+    {
+        return $this->questions->count() === $this->answers()->count();
+    }
+
     private function questionAlreadyAnswered(Answer $answer): ?Answer
     {
-        return $this->answers()->where('question_id', $answer->question_id)->first();
+        return $this->answers()
+            ->where('question_id', $answer->question_id)
+            ->first();
     }
 
     public function result(): string
     {
-        return $this->resolveTestResult(
+        return $this->resolvePersonality(
             $this->answers()->sum('value')
         );
     }
 
-    public function resolveTestResult(int $totalPoints): string
+    public function resolvePersonality(int $totalPoints): string
     {
+
+        $answersCount = $this->answers()->count();
+
         switch (true) {
-            case $totalPoints < -5:
+            case $totalPoints < -$answersCount:
                 return 'You are very introvert';
-            case in_array($totalPoints,range(-5,-1)):
+            case in_array($totalPoints, range(-$answersCount, -1)):
                 return 'You are a bit introvert';
             case $totalPoints === 0:
                 return 'You can be both';
-            case in_array($totalPoints,range(1,5)):
+            case in_array($totalPoints, range(1, $answersCount)):
                 return 'You are a bit extrovert';
-            case $totalPoints > 5:
+            case $totalPoints > $answersCount:
                 return 'You are very extrovert';
         }
     }
