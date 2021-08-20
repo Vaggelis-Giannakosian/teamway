@@ -13,9 +13,15 @@ class Test extends Model
 
     protected $fillable = [
         'title',
+        'excerpt',
         'description',
         'slug',
-        'classification'
+        'classification',
+        'image'
+    ];
+
+    protected $casts = [
+        'classification' => 'array'
     ];
 
     public function questions(): BelongsToMany
@@ -57,5 +63,15 @@ class Test extends Model
         }
 
         throw new \Exception('Classification not found');
+    }
+
+    public function imageUrl()
+    {
+        return asset('test-images/' . $this->image);
+    }
+
+    public function thumbUrl()
+    {
+        return asset('test-images/thumbs/' . $this->image);
     }
 }

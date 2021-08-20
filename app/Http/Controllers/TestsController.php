@@ -15,10 +15,11 @@ class TestsController extends Controller
     public function index(Request $request, Test $test, TestsRepository $testsRepo)
     {
         $userTest = $testsRepo->getActiveTestOrCreateNew($test);
+        $userTest->setRelation('test',$test);
         $userTest->loadMissing('test.questions.answers');
 
         return view('test', [
-            'test' => $userTest
+            'userTest' => $userTest
         ]);
     }
 

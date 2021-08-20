@@ -29,9 +29,11 @@
                 <!-- Grid column -->
                 <div class="col-md-6 col-lg-4 col-xl-4 mb-4 mr-auto">
                     <!-- Content -->
-                    <h6 class="text-uppercase mb-4 text-left font-weight-bold">Company name</h6>
+                    <a class="text-black-50" href="{{route('home')}}">
+                        <h6 class="text-uppercase mb-4 text-left font-weight-bold">Teamway</h6>
+                    </a>
                     <p class="text-left">
-                        Here you can use rows and columns to organize your footer content. Lorem ipsum
+                        Here is the description of this wonderful company. Lorem ipsum
                         dolor sit amet, consectetur adipisicing elit.
                     </p>
                 </div>
@@ -56,8 +58,10 @@
     <!-- Section: Links  -->
 
     <!-- Copyright -->
-    <div class="text-center py-1 px-3" style="background-color: rgba(0, 0, 0, 0.05);">
-        © {{date('Y')}} Copyright
+    <div class="text-left py-1 px-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        <div class="container">
+            <small class="font-weight-bold">© {{date('Y')}} Copyright</small>
+        </div>
     </div>
     <!-- Copyright -->
 </footer>

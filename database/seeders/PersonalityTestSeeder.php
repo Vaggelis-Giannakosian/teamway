@@ -36,8 +36,10 @@ class PersonalityTestSeeder extends Seeder
 
         $personalityTest = Test::factory()->create([
             'title' => 'Test: Are you an introvert or an extrovert?',
-            'description' => 'So do you consider yourself more of an introvert or an extrovert? Take this test, put together with input from psychoanalyst Sandrine Dury, and find out',
+            'excerpt' => 'So do you consider yourself more of an introvert or an extrovert? Take this test, put together with input from psychoanalyst Sandrine Dury, and find out',
+            'description' => 'At work, is it you who gets noticed first or perhaps the other people around you? Do you feel compelled to take centre-stage or are you more comfortable back-stage? If it’s the former, then you are eager for contact — warm and happy human relations. If it’s the latter, then solitude suits and stimulates you more and hell is often other people…',
             'slug' => 'personality-test',
+            'image' => 'introvert_or_extrovert.jpg',
             'classification' => [
                 ',-6' => 'You are very introvert',
                 '-5,-1' => 'You are a bit introvert',

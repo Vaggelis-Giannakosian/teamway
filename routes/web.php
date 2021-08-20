@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TestsController;
+use App\Models\Test;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    $tests = Test::all();
+    return view('home', compact('tests'));
+})->name('home');
 
 Route::prefix('{test:slug}')->name('tests.')->group(function () {
-    Route::get('/', [TestsController::class, 'index'])->name('index');
-    Route::get('/result', [TestsController::class, 'show'])->name('show');
-    Route::post('/{answer}', [TestsController::class, 'store'])->name('addAnswer');
+    Route::get('/', [TestsController::class, 'index'])->name('show');
+    Route::get('/result', [TestsController::class, 'show'])->name('result');
+    Route::put('/{answer}', [TestsController::class, 'store'])->name('update');
 });
 
 
