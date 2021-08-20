@@ -4,6 +4,7 @@ The request was to build a simple personality test application, that takes 3-5 d
 
 ### Requirements
 
+
 - PHP >= 7.4
 - BCMath PHP Extension
 - Ctype PHP Extension
@@ -14,13 +15,14 @@ The request was to build a simple personality test application, that takes 3-5 d
 - PDO PHP Extension for Sqlite
 - Tokenizer PHP Extension
 - XML PHP Extension
-
+- Composer
 
 ### Installation Guide
 
 Run: 
 
 ```
+composer install
 php artisan teamway:install
 php artisan serve
 ```

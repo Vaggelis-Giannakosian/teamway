@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="row">
-        <h1 class="col-12 my-4 text-center">{{$userTest->test->title}}</h1>
+        <h1 class="col-12 mb-4 text-center">{{$userTest->test->title}}</h1>
 
         <h5 class="col-8 mx-auto text-center px-5 mb-5">{{$userTest->test->excerpt}}</h5>
 

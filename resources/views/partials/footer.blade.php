@@ -10,10 +10,10 @@
 
         <!-- Right -->
         <div>
-            <a href="https://www.linkedin.com/in/vaggelis-giannakosian" target="_blank" class="me-4 text-reset text-decoration-none">
+            <a href="https://www.linkedin.com/in/vaggelis-giannakosian" target="_blank" class="me-4 text-reset text-decoration-none mr-2">
                 <i class="fab fa-linkedin-in text-primary"></i>
             </a>
-            <a href="https://github.com/Vaggelis-Giannakosian" target="_blank" class="me-4 text-reset text-decoration-none">
+            <a href="https://github.com/Vaggelis-Giannakosian" target="_blank" class="me-4 text-reset text-decoration-none ml-2">
                 <i class="fab fa-github"></i>
             </a>
         </div>

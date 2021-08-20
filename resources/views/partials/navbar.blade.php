@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
         <div class="container">
             <a class="navbar-brand" href="{{route('home')}}">{{config('app.name')}}</a>
             <a class="navbar-toggler" type="button"
@@ -11,7 +11,7 @@
                 <span class="navbar-toggler-icon"></span>
             </a>
             <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
-                <ul class="navbar-nav text-right pt-3">
+                <ul class="navbar-nav text-right pt-1">
                     <li class="nav-item {{ request()->routeIs('home') ? 'font-weight-bold active' : '' }}">
                         <a class="nav-link" href="{{route('home')}}">Home</a>
                     </li>
