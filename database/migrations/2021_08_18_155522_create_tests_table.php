@@ -15,15 +15,18 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->uuid('session_id');
+            $table->string('title');
+            $table->text('description');
+            $table->string('slug');
             $table->timestamps();
         });
 
-        Schema::create('answer_test', function (Blueprint $table) {
+        Schema::create('question_test', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('order_column')->nullable();
             $table->foreignId('test_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('answer_id')->constrained()->cascadeOnDelete();
-            $table->unique(['test_id','answer_id']);
+            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            $table->unique(['test_id','question_id']);
             $table->timestamps();
         });
     }
@@ -36,6 +39,6 @@ class CreateTestsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tests');
-        Schema::dropIfExists('answer_test');
+        Schema::dropIfExists('question_test');
     }
 }

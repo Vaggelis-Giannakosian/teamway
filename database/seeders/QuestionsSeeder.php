@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Test;
 use Illuminate\Database\Seeder;
 
 class QuestionsSeeder extends Seeder
@@ -16,9 +17,11 @@ class QuestionsSeeder extends Seeder
     public function run()
     {
         $answers = collect([]);
+        $questions = [];
         foreach ($this->questionsArray() as $questionTitle => $answersArray) {
 
-            $question = Question::factory()->create(['title'=>$questionTitle]);
+            $question = Question::factory()->create(['title' => $questionTitle]);
+            $questions[$question->id] = ['order_column' => $question->id];
 
             foreach ($answersArray as $answer => $value) {
                 $answers->push([
@@ -30,6 +33,13 @@ class QuestionsSeeder extends Seeder
         }
 
         Answer::insert($answers->toArray());
+
+        $personalityTest = Test::factory()->create([
+            'title' => 'Test: Are you an introvert or an extrovert?',
+            'description' => 'So do you consider yourself more of an introvert or an extrovert? Take this test, put together with input from psychoanalyst Sandrine Dury, and find out',
+            'slug' => 'personality-test'
+        ]);
+        $personalityTest->questions()->sync($questions);
     }
 
     private function questionsArray(): array

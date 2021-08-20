@@ -3,16 +3,17 @@
 namespace Database\Factories;
 
 use App\Models\Test;
+use App\Models\UserTest;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TestFactory extends Factory
+class UserTestFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Test::class;
+    protected $model = UserTest::class;
 
     /**
      * Define the model's default state.
@@ -21,12 +22,12 @@ class TestFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->paragraph;
-
         return [
-            'title' => $title,
-            'description' => $this->faker->paragraphs(3, $asText = true),
-            'slug' => \Str::slug($title)
+            'session_id' => \Str::uuid(),
+            'test_id' => function () {
+                return Test::factory()->create();
+            },
+            'user_id' => null
         ];
     }
 }

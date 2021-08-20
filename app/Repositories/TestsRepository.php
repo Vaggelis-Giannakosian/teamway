@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Test;
 
-class PersonalityTestRepository
+class TestsRepository
 {
 
     public function __construct()

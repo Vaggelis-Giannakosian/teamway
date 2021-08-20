@@ -21,10 +21,15 @@ The request was to build a simple personality test application, that takes 3-5 d
 Run: 
 
 ```
-cp .env.example .env
-php artisan key:generate
-touch storage/app/database.sqlite
-php artisan migrate --seed
+php artisan teamway:install
 php artisan serve
+```
+
+### Tests
+
+Run:
+
+```
+php artisan test
 ```
 
