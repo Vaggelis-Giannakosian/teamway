@@ -1,11 +1,7 @@
 @extends('layout')
 
-
 @section('content')
 
-    <div class="">
-
-
-    </div>
+{{--    {{dd($test)}}--}}
 
 @endsection

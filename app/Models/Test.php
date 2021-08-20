@@ -14,7 +14,8 @@ class Test extends Model
     protected $fillable = [
         'title',
         'description',
-        'slug'
+        'slug',
+        'classification'
     ];
 
     public function questions(): BelongsToMany
@@ -22,9 +23,39 @@ class Test extends Model
         return $this->belongsToMany(Question::class)->withPivot('order_column');
     }
 
-    public function userTests()
+    public function result(int $points)
     {
-
+        return $this->resolveStatus($points);
     }
 
+    public function getClassificationAttribute($classification): array
+    {
+        $ranges = [];
+
+        foreach (json_decode($classification) as $range => $label) {
+            $limits = explode(',', $range);
+            $ranges[$label] = [
+                'min' => $limits[0] ?? '',
+                'max' => $limits[1] ?? ''
+            ];
+        }
+
+        return $ranges;
+    }
+
+    private function resolveStatus(int $points): string
+    {
+
+        foreach ($this->classification as $label => $range) {
+
+            $min = $range['min'] === '' ? -INF : $range['min'];
+            $max = $range['max'] === '' ? INF : $range['max'];
+
+            if ($points < $min || $points > $max) continue;
+
+            return $label;
+        }
+
+        throw new \Exception('Classification not found');
+    }
 }

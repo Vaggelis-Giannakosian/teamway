@@ -23,7 +23,7 @@ class UserTest extends Model
         return $this->belongsTo(Test::class);
     }
 
-    public function questions():BelongsToMany
+    public function questions(): BelongsToMany
     {
         return $this->test->questions();
     }
@@ -72,29 +72,10 @@ class UserTest extends Model
 
     public function result(): string
     {
-        return $this->resolvePersonality(
+        if (!$this->isCompleted()) throw new \Exception('Test is not completed yet');
+
+        return $this->test->result(
             $this->answers()->sum('value')
         );
     }
-
-    public function resolvePersonality(int $totalPoints): string
-    {
-
-        $answersCount = $this->answers()->count();
-
-        switch (true) {
-            case $totalPoints < -$answersCount:
-                return 'You are very introvert';
-            case in_array($totalPoints, range(-$answersCount, -1)):
-                return 'You are a bit introvert';
-            case $totalPoints === 0:
-                return 'You can be both';
-            case in_array($totalPoints, range(1, $answersCount)):
-                return 'You are a bit extrovert';
-            default:
-                return 'You are very extrovert';
-        }
-
-    }
-
 }

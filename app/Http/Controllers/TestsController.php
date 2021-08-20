@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Test;
+use App\Models\UserTest;
 use App\Repositories\TestsRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,40 +12,42 @@ use Symfony\Component\HttpFoundation\Response;
 class TestsController extends Controller
 {
 
-
-    public function index(Request $request, TestsRepository $testsRepo)
+    public function index(Request $request, Test $test, TestsRepository $testsRepo)
     {
-        $userTest = $testsRepo->getActiveTestOrCreateNew();
+        $userTest = $testsRepo->getActiveTestOrCreateNew($test);
+        $userTest->loadMissing('test.questions.answers');
 
-        return $userTest;
+        return view('test', [
+            'test' => $userTest
+        ]);
     }
 
-    public function show(Request $request,TestsRepository $testsRepo)
+    public function show(Request $request, Test $test, TestsRepository $testsRepo)
     {
-        $test = $testsRepo->getActiveTest();
+        $userTest = $testsRepo->getActiveTest($test);
 
-        if (!$test) {
-            abort(Response::HTTP_NOT_FOUND);
+        if (!$userTest) {
+            return redirect()->route('home');
         }
 
-        if (!$test->isCompleted()) {
-            //TODO: redirect back to test
+        if (!$userTest->isCompleted()) {
+            flash('You first have to complete this test', 'danger');
+            return redirect()->route('tests.index', $test);
+        }
+
+        return $userTest->result();
+    }
+
+
+    public function store(Request $request, Test $test, Answer $answer, TestsRepository $testsRepo)
+    {
+        $userTest = $testsRepo->getActiveTest($test);
+
+        if (!$userTest) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
 
-        return $test->result();
-    }
-
-
-    public function store(Request $request, Answer $answer, TestsRepository $testsRepo)
-    {
-        $test = $testsRepo->getActiveTest();
-
-        if (!$test) {
-            return response('', Response::HTTP_BAD_REQUEST);
-        }
-
-        $result = $test->addAnswer($answer);
+        $result = $userTest->addAnswer($answer);
 
         if ($result) {
             return response([], Response::HTTP_CREATED);

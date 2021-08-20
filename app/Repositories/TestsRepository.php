@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Test;
+use App\Models\UserTest;
 
 class TestsRepository
 {
@@ -12,26 +13,26 @@ class TestsRepository
         $this->sessionUUID = session()->get('uuid');
     }
 
-    public function getActiveTestOrCreateNew():Test
+    public function getActiveTestOrCreateNew(Test $test): UserTest
     {
-        return $this->getActiveTest() ?? $this->createNewTest();
+        return $this->getActiveTest($test) ?? $this->createNewTest($test);
     }
 
-    public function getActiveTest(): ?Test
+    public function getActiveTest(Test $test): ?UserTest
     {
-        return Test::where('uuid', $this->sessionUUID)->first();
+        return UserTest::where(['session_id' => $this->sessionUUID, 'test_id' => $test->id])->first();
     }
 
-    public function createNewTest(): Test
+    public function createNewTest(Test $test): UserTest
     {
-        return Test::create(['uuid' => $this->sessionUUID]);
+        return UserTest::create(['session_id' => $this->sessionUUID, 'test_id' => $test->id]);
     }
 
-    public function destroyActiveTest(): bool
+    public function destroyActiveTest(Test $test): bool
     {
-        $activeTest = $this->getActiveTest();
+        $activeTest = $this->getActiveTest($test);
 
-        if($activeTest){
+        if ($activeTest) {
             return $activeTest->delete();
         }
 

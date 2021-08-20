@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PersonalityTestController;
+use App\Http\Controllers\TestsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::view('/', 'welcome')->name('home');
+
+Route::prefix('{test:slug}')->name('tests.')->group(function () {
+    Route::get('/', [TestsController::class, 'index'])->name('index');
+    Route::get('/result', [TestsController::class, 'show'])->name('show');
+    Route::post('/{answer}', [TestsController::class, 'store'])->name('addAnswer');
 });
 
-Route::get('personality-test',[PersonalityTestController::class,'index']);
-Route::get('personality-test/{answer}',[PersonalityTestController::class,'store']);
-Route::get('personality-test/result',[PersonalityTestController::class,'show']);
+
+

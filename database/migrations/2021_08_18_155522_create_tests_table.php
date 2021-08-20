@@ -18,6 +18,7 @@ class CreateTestsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('slug');
+            $table->longText('classification');
             $table->timestamps();
         });
 

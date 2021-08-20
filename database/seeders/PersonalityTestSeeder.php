@@ -7,7 +7,7 @@ use App\Models\Question;
 use App\Models\Test;
 use Illuminate\Database\Seeder;
 
-class QuestionsSeeder extends Seeder
+class PersonalityTestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -37,7 +37,14 @@ class QuestionsSeeder extends Seeder
         $personalityTest = Test::factory()->create([
             'title' => 'Test: Are you an introvert or an extrovert?',
             'description' => 'So do you consider yourself more of an introvert or an extrovert? Take this test, put together with input from psychoanalyst Sandrine Dury, and find out',
-            'slug' => 'personality-test'
+            'slug' => 'personality-test',
+            'classification' => [
+                ',-6' => 'You are very introvert',
+                '-5,-1' => 'You are a bit introvert',
+                '0,0' => 'You can be both',
+                '1,5' => 'You are a bit extrovert',
+                '6,' => 'You are very extrovert',
+            ]
         ]);
         $personalityTest->questions()->sync($questions);
     }

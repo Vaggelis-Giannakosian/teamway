@@ -26,7 +26,8 @@ class TestFactory extends Factory
         return [
             'title' => $title,
             'description' => $this->faker->paragraphs(3, $asText = true),
-            'slug' => \Str::slug($title)
+            'slug' => \Str::slug($title),
+            'classification' => []
         ];
     }
 }
