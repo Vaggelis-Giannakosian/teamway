@@ -6,6 +6,7 @@ The request was to build a simple personality test application, that takes 3-5 d
 
 
 - PHP >= 7.4
+- Composer
 - BCMath PHP Extension
 - Ctype PHP Extension
 - Fileinfo PHP extension
@@ -15,7 +16,6 @@ The request was to build a simple personality test application, that takes 3-5 d
 - PDO PHP Extension for Sqlite
 - Tokenizer PHP Extension
 - XML PHP Extension
-- Composer
 
 ### Installation Guide
 
