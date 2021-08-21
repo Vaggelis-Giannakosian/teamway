@@ -14,7 +14,8 @@
                 <h4 class="py-3" v-text="currentQuestion.title"/>
 
                 <ul ref="answersList">
-                    <li v-for="answer in currentQuestion.answers" :key='answer.id' class="position-relative">
+                    <li v-for="answer in currentQuestion.answers" :key='answer.id'
+                        class="position-relative">
                         <input type="radio"
                                class="position-absolute"
                                :name="`question_${currentQuestion.id}`"
@@ -29,7 +30,11 @@
 
                 <div class="pt-4 d-flex align-items-center justify-content-between">
                     <div>
-                        <a class="btn btn-outline-info" href="#" @click.prevent="goToPreviousQuestion">Previous</a>
+                        <a v-if="currentQuestionIndex !== 0"
+                           class="btn btn-outline-info"
+                           href="#"
+                           @click.prevent="goToPreviousQuestion"
+                        >Previous</a>
                         <a class="btn btn-info"
                            href="#"
                            @click.prevent="goToNextQuestion"
@@ -62,6 +67,7 @@ export default {
         }
     },
     created() {
+        this.questions.forEach(q => q.answers = this.shuffleArray(q.answers))
         this.currentQuestion = this.questions[0]
     },
     computed: {
@@ -73,6 +79,23 @@ export default {
         }
     },
     methods: {
+        shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (currentIndex !== 0) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        },
         goToNextQuestion() {
             this.updateAnswer()
             this.chooseNextQuestion();
@@ -112,12 +135,12 @@ export default {
             axios.put(this.completeUrl, {
                 answers: this.answers.map(a => a.id)
             })
-                .then(({data}) => {
-                    window.location = this.redirectUrl
-                })
-                .catch((e) => {
-                    this.loading = false
-                })
+            .then(({data}) => {
+                window.location = this.redirectUrl
+            })
+            .catch((e) => {
+                this.loading = false
+            })
         }
     },
 }

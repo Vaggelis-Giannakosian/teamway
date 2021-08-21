@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Test;
 use App\Models\UserTest;
+use Illuminate\Database\Eloquent\Collection;
 
 class TestsRepository
 {
@@ -43,5 +44,15 @@ class TestsRepository
         }
 
         return $this->createNewTest($test);
+    }
+
+    public function count(): int
+    {
+        return Test::count();
+    }
+
+    public function all(): Collection
+    {
+        return Test::all();
     }
 }

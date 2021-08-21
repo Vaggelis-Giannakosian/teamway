@@ -42,9 +42,7 @@ class InstallCommand extends Command
         $this->createEnvFile();
         $this->createDbFile();
 
-        if (strlen(config('app.key')) === 0) {
-            $this->call('key:generate');
-        }
+        $this->call('key:generate');
 
         $this->call('cache:clear');
         $this->call('config:cache');

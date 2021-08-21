@@ -59,10 +59,7 @@ class TestsController extends Controller
             'answers.*' => [
                 'required',
                 'integer',
-                Rule::exists('answers', 'id')
-                    ->whereIn('question_id', $test->availableAnswers()
-                        ->pluck('id')
-                        ->toArray())
+                Rule::in($test->availableAnswers()->pluck('id')->toArray()),
             ]
         ]);
 
