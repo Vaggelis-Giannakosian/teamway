@@ -1,9 +1,9 @@
 @inject('testsRepo','App\Repositories\TestsRepository')
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
         <div class="container">
-            <a class="navbar-brand" href="{{route('home')}}">{{config('app.name')}}</a>
+            <a class="navbar-brand font-weight-bold text-uppercase" href="{{route('home')}}">{{config('app.name')}}</a>
             <a class="navbar-toggler" type="button"
                data-toggle="collapse"
                data-target="#navbarNav"

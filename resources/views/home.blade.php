@@ -4,11 +4,11 @@
 @section('content')
 
     <div class="container">
-        <h2 class="my-4">Tests</h2>
+        <h2 class="mt-4">Tests</h2>
 
-        <div class="row my-5">
+        <div class="row my-3">
             @foreach($tests as $test)
-               <div class="col-lg-4 col-md-6 mb-4">
+               <div class="col-lg-4 col-md-6 mt-4 pt-4">
                    <div class="card shadow-sm h-100">
                        <a href="{{route('tests.show',$test)}}">
                            <img onerror="this.style.display='none'" src="{{$test->thumbUrl()}}" class="card-img-top" alt="...">

@@ -15,11 +15,11 @@
 
     <div class="container pt-5 pb-3">
 
-        <p>
-            {{$userTest->test->description}}
-        </p>
+        @if($userTest->test->description)
+            <p class="pb-2">{{$userTest->test->description}}</p>
+        @endif
 
-        <div class="mt-5 row">
+        <div class="mt-4 row">
             <questionnaire class="col-lg-8 mx-auto"
                            :questions="{{json_encode($userTest->test->questions)}}"
                            :initial-answers="{{json_encode($userTest->answers)}}"
