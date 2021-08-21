@@ -11,6 +11,9 @@ class Test extends Model
 {
     use HasFactory;
 
+    const IMAGES_FOLDER = 'test-images/';
+    const THUMBS_FOLDER = 'test-images/thumbs/';
+
     protected $fillable = [
         'title',
         'excerpt',
@@ -62,7 +65,7 @@ class Test extends Model
     private function resolveStatus(int $points): array
     {
 
-        foreach ($this->classification as $label => $details) {
+        foreach ($this->classification as $title => $details) {
             $description = $details['description'];
             $range = $details['range'];
 
@@ -71,19 +74,19 @@ class Test extends Model
 
             if ($points < $min || $points > $max) continue;
 
-            return compact('label','description');
+            return compact('title', 'description');
         }
 
         throw new \Exception('Classification not found');
     }
 
-    public function imageUrl()
+    public function imageUrl(): string
     {
-        return asset('test-images/' . $this->image);
+        return asset(self::IMAGES_FOLDER . $this->image);
     }
 
-    public function thumbUrl()
+    public function thumbUrl(): string
     {
-        return asset('test-images/thumbs/' . $this->image);
+        return asset(self::THUMBS_FOLDER . $this->image);
     }
 }

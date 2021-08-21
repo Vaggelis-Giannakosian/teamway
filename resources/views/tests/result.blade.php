@@ -20,7 +20,7 @@
             <div class="col-lg-10 mx-auto">
                 <h1>Result:</h1>
 
-                <h3>{{$result['label']}}</h3>
+                <h3>{{$result['title']}}</h3>
 
                 <p>{{$result['description']}}</p>
 

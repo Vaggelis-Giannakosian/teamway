@@ -72,7 +72,7 @@ class TestsController extends Controller
         $result = $userTest->syncAnswers($validatedData['answers']);
 
         if ($result) {
-            return response([], Response::HTTP_CREATED);
+            return response([], Response::HTTP_OK);
         }
 
         return response([

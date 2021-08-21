@@ -29,7 +29,7 @@ class TestFactory extends Factory
             'description' => $this->faker->paragraphs(3, $asText = true),
             'slug' => \Str::slug($title),
             'classification' => [],
-            'image' => ''
+            'image' => $this->faker->slug.'.jpg'
         ];
     }
 }

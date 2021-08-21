@@ -55,4 +55,9 @@ class TestsRepository
     {
         return Test::all();
     }
+
+    public function refreshSessionId(): void
+    {
+        $this->sessionUUID = session()->get('uuid');
+    }
 }
