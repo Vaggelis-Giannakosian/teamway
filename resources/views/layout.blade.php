@@ -33,5 +33,8 @@
 </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+<script src="{{mix('js/vendor.js')}}"></script>
+<script src="{{mix('js/manifest.js')}}"></script>
+<script src="{{mix('js/app.js')}}"></script>
 @stack('js')
 </html>

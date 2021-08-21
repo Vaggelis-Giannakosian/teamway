@@ -21,9 +21,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::prefix('{test:slug}')->name('tests.')->group(function () {
-    Route::get('/', [TestsController::class, 'index'])->name('show');
-    Route::get('/result', [TestsController::class, 'show'])->name('result');
-    Route::put('/{answer}', [TestsController::class, 'store'])->name('update');
+    Route::get('/', [TestsController::class, 'show'])->name('show');
+    Route::put('/', [TestsController::class, 'complete'])->name('complete');
+    Route::get('/result', [TestsController::class, 'result'])->name('result');
 });
 
 

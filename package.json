@@ -11,8 +11,13 @@
     },
     "devDependencies": {
         "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
+        "laravel-mix": "^6.0.24",
+        "vue": "^2.6.14",
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.6.14",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "vue-loading-spinner": "^1.0.11"
     }
 }

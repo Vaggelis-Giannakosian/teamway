@@ -29,7 +29,12 @@ class Test extends Model
         return $this->belongsToMany(Question::class)->withPivot('order_column');
     }
 
-    public function result(int $points)
+    public function availableAnswers(): Collection
+    {
+        return $this->questions()->with('answers')->get()->flatMap->answers;
+    }
+
+    public function result(int $points): array
     {
         return $this->resolveStatus($points);
     }
@@ -39,27 +44,34 @@ class Test extends Model
         $ranges = [];
 
         foreach (json_decode($classification) as $range => $label) {
+
             $limits = explode(',', $range);
-            $ranges[$label] = [
-                'min' => $limits[0] ?? '',
-                'max' => $limits[1] ?? ''
+
+            $ranges[$label->title] = [
+                'range' => [
+                    'min' => $limits[0] ?? '',
+                    'max' => $limits[1] ?? ''
+                ],
+                'description' => $label->description,
             ];
         }
 
         return $ranges;
     }
 
-    private function resolveStatus(int $points): string
+    private function resolveStatus(int $points): array
     {
 
-        foreach ($this->classification as $label => $range) {
+        foreach ($this->classification as $label => $details) {
+            $description = $details['description'];
+            $range = $details['range'];
 
             $min = $range['min'] === '' ? -INF : $range['min'];
             $max = $range['max'] === '' ? INF : $range['max'];
 
             if ($points < $min || $points > $max) continue;
 
-            return $label;
+            return compact('label','description');
         }
 
         throw new \Exception('Classification not found');

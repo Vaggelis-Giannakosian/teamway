@@ -13,9 +13,15 @@ class TestsRepository
         $this->sessionUUID = session()->get('uuid');
     }
 
-    public function getActiveTestOrCreateNew(Test $test): UserTest
+    public function getActiveTestOrCreateNewIfCompleted(Test $test): UserTest
     {
-        return $this->getActiveTest($test) ?? $this->createNewTest($test);
+        $activeTest = $this->getActiveTest($test);
+
+        if ($activeTest) {
+            return $activeTest->isCompleted() ? $this->destroyActiveTestAndCreateNew($test) : $activeTest;
+        }
+
+        return $this->createNewTest($test);
     }
 
     public function getActiveTest(Test $test): ?UserTest
@@ -23,19 +29,19 @@ class TestsRepository
         return UserTest::where(['session_id' => $this->sessionUUID, 'test_id' => $test->id])->first();
     }
 
-    public function createNewTest(Test $test): UserTest
+    private function createNewTest(Test $test): UserTest
     {
         return UserTest::create(['session_id' => $this->sessionUUID, 'test_id' => $test->id]);
     }
 
-    public function destroyActiveTest(Test $test): bool
+    private function destroyActiveTestAndCreateNew(Test $test): UserTest
     {
         $activeTest = $this->getActiveTest($test);
 
         if ($activeTest) {
-            return $activeTest->delete();
+            $activeTest->delete();
         }
 
-        throw new \Exception('Test not found');
+        return $this->createNewTest($test);
     }
 }

@@ -41,11 +41,26 @@ class PersonalityTestSeeder extends Seeder
             'slug' => 'personality-test',
             'image' => 'introvert_or_extrovert.jpg',
             'classification' => [
-                ',-6' => 'You are very introvert',
-                '-5,-1' => 'You are a bit introvert',
-                '0,0' => 'You can be both',
-                '1,5' => 'You are a bit extrovert',
-                '6,' => 'You are very extrovert',
+                ',-6' => [
+                    'title' => 'You are very introvert',
+                    'description' => app(\Faker\Generator::class)->paragraphs(5,true)
+                ],
+                '-5,-1' => [
+                    'title' => 'You are a bit introvert',
+                    'description' => app(\Faker\Generator::class)->paragraphs(5,true)
+                ],
+                '0,0' => [
+                    'title' => 'You can be both',
+                    'description' => app(\Faker\Generator::class)->paragraphs(5,true)
+                ],
+                '1,5' => [
+                    'title' => 'You are a bit extrovert',
+                    'description' => app(\Faker\Generator::class)->paragraphs(5,true)
+                ],
+                '6,'=> [
+                    'title' => 'You are very extrovert',
+                    'description' => app(\Faker\Generator::class)->paragraphs(5,true)
+                ],
             ]
         ]);
         $personalityTest->questions()->sync($questions);

@@ -6,24 +6,26 @@ use App\Models\Answer;
 use App\Models\Test;
 use App\Models\UserTest;
 use App\Repositories\TestsRepository;
+use App\Rules\BanMultipleAnswersForSameQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class TestsController extends Controller
 {
 
-    public function index(Request $request, Test $test, TestsRepository $testsRepo)
+    public function show(Request $request, Test $test, TestsRepository $testsRepo)
     {
-        $userTest = $testsRepo->getActiveTestOrCreateNew($test);
-        $userTest->setRelation('test',$test);
-        $userTest->loadMissing('test.questions.answers');
+        $userTest = $testsRepo->getActiveTestOrCreateNewIfCompleted($test);
+        $userTest->setRelation('test', $test);
+        $userTest->loadMissing('answers:id,question_id', 'test.questions.answers');
 
-        return view('test', [
+        return view('tests.show', [
             'userTest' => $userTest
         ]);
     }
 
-    public function show(Request $request, Test $test, TestsRepository $testsRepo)
+    public function result(Request $request, Test $test, TestsRepository $testsRepo)
     {
         $userTest = $testsRepo->getActiveTest($test);
 
@@ -33,22 +35,44 @@ class TestsController extends Controller
 
         if (!$userTest->isCompleted()) {
             flash('You first have to complete this test', 'danger');
-            return redirect()->route('tests.index', $test);
+            return redirect()->route('tests.show', $test);
         }
 
-        return $userTest->result();
+        $userTest->setRelation('test', $test);
+        return view('tests.result', [
+            'userTest' => $userTest,
+            'result' => $userTest->result()
+        ]);
+
     }
 
 
-    public function store(Request $request, Test $test, Answer $answer, TestsRepository $testsRepo)
+    public function complete(Request $request, Test $test, TestsRepository $testsRepo)
     {
+        $validatedData = $request->validate([
+            'answers' => [
+                'array',
+                'required',
+                'size:' . $test->questions()->count(),
+                new BanMultipleAnswersForSameQuestion()
+            ],
+            'answers.*' => [
+                'required',
+                'integer',
+                Rule::exists('answers', 'id')
+                    ->whereIn('question_id', $test->availableAnswers()
+                        ->pluck('id')
+                        ->toArray())
+            ]
+        ]);
+
         $userTest = $testsRepo->getActiveTest($test);
 
         if (!$userTest) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
 
-        $result = $userTest->addAnswer($answer);
+        $result = $userTest->syncAnswers($validatedData['answers']);
 
         if ($result) {
             return response([], Response::HTTP_CREATED);

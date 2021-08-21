@@ -38,24 +38,12 @@ class UserTest extends Model
         return $this->belongsToMany(Answer::class);
     }
 
-    public function addAnswer(Answer $answer): bool
+    public function syncAnswers(array $answers): bool
     {
-        if ($oldAnswer = $this->questionAlreadyAnswered($answer)) {
-            $this->answers()->detach($oldAnswer);
-        }
+        $this->answers()->detach();
 
-        $result = $this->answers()->syncWithoutDetaching($answer);
+        $result = $this->answers()->sync($answers);
         return count($result['attached'] ?? []);
-    }
-
-    public function nextRemainingQuestion(): ?Question
-    {
-        $questionsAlreadyAnswered = $this->answers->count() ? $this->answers->pluck('question_id') : [];
-
-        return Question::whereNotIn('id', $questionsAlreadyAnswered)
-            ->orderBy('id')
-            ->select('id')
-            ->first();
     }
 
     public function isCompleted(): bool
@@ -63,14 +51,8 @@ class UserTest extends Model
         return $this->questionsCount() === $this->answers()->count();
     }
 
-    private function questionAlreadyAnswered(Answer $answer): ?Answer
-    {
-        return $this->answers()
-            ->where('question_id', $answer->question_id)
-            ->first();
-    }
 
-    public function result(): string
+    public function result(): array
     {
         if (!$this->isCompleted()) throw new \Exception('Test is not completed yet');
 
