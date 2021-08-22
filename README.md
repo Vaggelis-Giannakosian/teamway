@@ -16,6 +16,7 @@ The request was to build a simple personality test application, that takes 3-5 d
 - PDO PHP Extension for Sqlite
 - Tokenizer PHP Extension
 - XML PHP Extension
+- PDO_SQLITE PHP Extension
 
 ### Installation Guide
 
